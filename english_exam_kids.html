@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Adventure Exam 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #E8F4FD;
+    --blue: #3B82F6;
+    --blue-dark: #1D4ED8;
+    --yellow: #FCD34D;
+    --yellow-dark: #F59E0B;
+    --green: #34D399;
+    --green-dark: #059669;
+    --pink: #F472B6;
+    --pink-dark: #DB2777;
+    --purple: #A78BFA;
+    --purple-dark: #7C3AED;
+    --orange: #FB923C;
+    --white: #FFFFFF;
+    --ink: #1E293B;
+    --muted: #64748B;
+    --card-bg: #FFFFFF;
+    --border: #E2E8F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--sky);
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(167,139,250,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(52,211,153,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(251,191,36,0.08) 0%, transparent 60%);
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* FLOATING STARS */
+  .stars {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    font-size: 20px;
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.4;
+  }
+  .star:nth-child(1)  { top: 5%;  left: 5%;  animation-delay: 0s;   font-size: 16px; }
+  .star:nth-child(2)  { top: 15%; left: 92%; animation-delay: 1s;   font-size: 22px; }
+  .star:nth-child(3)  { top: 40%; left: 3%;  animation-delay: 2s;   font-size: 14px; }
+  .star:nth-child(4)  { top: 70%; left: 95%; animation-delay: 0.5s; font-size: 18px; }
+  .star:nth-child(5)  { top: 85%; left: 8%;  animation-delay: 1.5s; font-size: 20px; }
+  .star:nth-child(6)  { top: 55%; left: 97%; animation-delay: 3s;   font-size: 12px; }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-15px) rotate(10deg); }
+  }
+
+  /* HEADER */
+  .header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 24px 32px;
+  }
+  .header-card {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--purple-dark) 100%);
+    border-radius: 32px;
+    padding: 32px 48px;
+    box-shadow: 0 20px 60px rgba(59,130,246,0.35), 0 4px 0 rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+    max-width: 600px;
+    width: 100%;
+  }
+  .header-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(180deg); } }
+  .header-emoji { font-size: 56px; margin-bottom: 12px; display: block; animation: bounce 2s ease-in-out infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: white;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .header p {
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    max-width: 700px;
+    margin: 0 auto 24px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-info span {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue-dark);
+  }
+  .stars-earned { font-size: 18px; }
+  .progress-track {
+    height: 16px;
+    background: white;
+    border-radius: 999px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--blue), var(--purple));
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.5s ease;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '⭐';
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+  }
+
+  /* MAIN */
+  .exam-body {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* STUDENT INFO */
+  .info-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 32px rgba(59,130,246,0.12), 0 3px 0 var(--yellow-dark);
+    border: 3px solid var(--yellow);
+  }
+  .info-card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: var(--blue-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .field-group input {
+    background: var(--sky);
+    border: 2.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field-group input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+  }
+
+  /* SECTION BLOCKS */
+  .section-block {
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: slideUp 0.5s ease forwards;
+  }
+  .section-block:nth-child(2) { animation-delay: 0.1s; }
+  .section-block:nth-child(3) { animation-delay: 0.2s; }
+  .section-block:nth-child(4) { animation-delay: 0.3s; }
+  .section-block:nth-child(5) { animation-delay: 0.4s; }
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    color: white;
+  }
+  .section-header.blue   { background: linear-gradient(135deg, #3B82F6, #1D4ED8); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
+  .section-header.green  { background: linear-gradient(135deg, #10B981, #059669); box-shadow: 0 6px 20px rgba(16,185,129,0.4); }
+  .section-header.pink   { background: linear-gradient(135deg, #F472B6, #DB2777); box-shadow: 0 6px 20px rgba(244,114,182,0.4); }
+  .section-header.orange { background: linear-gradient(135deg, #FB923C, #EA580C); box-shadow: 0 6px 20px rgba(251,146,60,0.4); }
+  .section-emoji { font-size: 36px; }
+  .section-title h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+  .section-title p { font-size: 13px; opacity: 0.9; font-weight: 600; margin-top: 2px; }
+
+  /* QUESTION CARDS */
+  .q-card {
+    background: white;
+    border-radius: 20px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border: 2.5px solid transparent;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .q-card:hover { transform: translateY(-2px); }
+  .q-card.answered { border-color: var(--green); }
+
+  .q-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--yellow);
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .q-text em { color: var(--blue-dark); font-style: normal; font-weight: 800; }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 2.5px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 15px;
+    font-weight: 700;
+    user-select: none;
+    background: var(--sky);
+  }
+  .opt:hover { border-color: var(--blue); background: #EFF6FF; transform: translateX(4px); }
+  .opt input[type="radio"] { display: none; }
+  .opt:has(input:checked) { border-color: var(--green-dark); background: #ECFDF5; }
+  .opt-bubble {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: 2.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    transition: all 0.15s;
+    background: white;
+  }
+  .opt:has(input:checked) .opt-bubble {
+    background: var(--green-dark);
+    border-color: var(--green-dark);
+    color: white;
+  }
+
+  /* FILL BLANK */
+  .blank {
+    display: inline-block;
+    border-bottom: 3px solid var(--blue);
+    min-width: 100px;
+    padding: 2px 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    background: transparent;
+    outline: none;
+    text-align: center;
+  }
+  .blank:focus { border-bottom-color: var(--purple-dark); }
+
+  /* TEXTAREA */
+  .q-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: var(--sky);
+    border: 2.5px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .q-textarea:focus { border-color: var(--blue); }
+
+  /* READING PASSAGE */
+  .passage-box {
+    background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
+    border: 2.5px solid var(--yellow-dark);
+    border-radius: 18px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .passage-box::before {
+    content: '📖';
+    position: absolute;
+    top: -16px;
+    left: 20px;
+    font-size: 28px;
+  }
+  .passage-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    color: var(--yellow-dark);
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+  .passage-text {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  /* LISTENING */
+  .listen-box {
+    background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+    border: 2.5px solid var(--purple);
+    border-radius: 18px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .listen-play {
+    width: 56px; height: 56px;
+    background: var(--purple-dark);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(124,58,237,0.4);
+    transition: transform 0.15s;
+  }
+  .listen-play:hover { transform: scale(1.1); }
+  .listen-info { flex: 1; }
+  .listen-title { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--purple-dark); }
+  .listen-meta { font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+
+  .show-script {
+    background: none;
+    border: 2px solid var(--purple);
+    color: var(--purple-dark);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: all 0.15s;
+  }
+  .show-script:hover { background: var(--purple); color: white; }
+  .script-box {
+    background: #F5F3FF;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.8;
+    color: var(--ink);
+    display: none;
+    margin-bottom: 14px;
+    border: 2px solid #DDD6FE;
+  }
+  .script-box.visible { display: block; }
+
+  /* ORAL */
+  .speak-card {
+    background: linear-gradient(135deg, #FFF0F6, #FCE7F3);
+    border: 2.5px solid var(--pink);
+    border-radius: 20px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .speak-prompt { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+  .speak-tip {
+    font-size: 13px; font-weight: 600; color: var(--pink-dark);
+    background: white; border-radius: 10px; padding: 8px 12px;
+    margin-bottom: 16px; display: inline-block;
+  }
+  .rec-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--pink-dark);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 4px 12px rgba(219,39,119,0.35);
+  }
+  .rec-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(219,39,119,0.45); }
+  .rec-btn.recording { background: #DC2626; animation: recPulse 1s ease-in-out infinite; }
+  @keyframes recPulse { 0%,100% { box-shadow: 0 4px 12px rgba(220,38,38,0.4); } 50% { box-shadow: 0 4px 24px rgba(220,38,38,0.7); } }
+  .rec-status { margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--muted); min-height: 20px; }
+  .rec-timer { color: #DC2626; }
+
+  /* TUTOR BOX */
+  .tutor-box {
+    background: white;
+    border: 2.5px solid var(--yellow);
+    border-radius: 20px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  .tutor-box h3 { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--yellow-dark); margin-bottom: 16px; }
+  .rating-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+  /* SUBMIT */
+  .submit-wrap { text-align: center; padding: 32px 0; }
+  .submit-btn {
+    background: linear-gradient(135deg, var(--blue), var(--purple-dark));
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 18px 56px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(59,130,246,0.4), 0 4px 0 var(--blue-dark);
+    transition: all 0.2s;
+  }
+  .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(59,130,246,0.5), 0 4px 0 var(--blue-dark); }
+  .submit-btn:active { transform: translateY(1px); box-shadow: 0 4px 16px rgba(59,130,246,0.4), 0 2px 0 var(--blue-dark); }
+
+  /* RESULTS */
+  .results-panel { display: none; max-width: 700px; margin: 0 auto 80px; padding: 0 24px; position: relative; z-index: 1; }
+  .results-panel.visible { display: block; }
+  .results-card {
+    background: white;
+    border-radius: 28px;
+    padding: 36px 32px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(59,130,246,0.2);
+    border: 3px solid var(--yellow);
+  }
+  .results-emoji { font-size: 72px; display: block; margin-bottom: 16px; animation: bigBounce 1s ease-in-out; }
+  @keyframes bigBounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2) rotate(10deg); } }
+  .results-title { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--blue-dark); margin-bottom: 6px; }
+  .results-name { font-size: 1.1rem; font-weight: 700; color: var(--muted); margin-bottom: 24px; }
+  .level-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    padding: 10px 32px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(251,146,60,0.4);
+  }
+  .scores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  .score-item {
+    background: var(--sky);
+    border-radius: 16px;
+    padding: 16px 12px;
+    border: 2px solid var(--border);
+  }
+  .score-emoji { font-size: 28px; margin-bottom: 6px; }
+  .score-num { font-family: 'Fredoka One', cursive; font-size: 1.6rem; color: var(--blue-dark); }
+  .score-lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .level-desc {
+    background: #F0FDF4;
+    border: 2px solid var(--green);
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    text-align: left;
+  }
+  .tutor-rec {
+    background: #FFF7ED;
+    border: 2px solid var(--yellow-dark);
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .formspree-status { font-size: 14px; font-weight: 700; min-height: 20px; margin-bottom: 16px; }
+  .print-btn {
+    background: white;
+    border: 2.5px solid var(--blue);
+    color: var(--blue-dark);
+    border-radius: 14px;
+    padding: 12px 32px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .print-btn:hover { background: var(--blue); color: white; }
+
+  /* CONFETTI ANIMATION */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confettiFall 3s ease-in forwards;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  @media (max-width: 500px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .scores-grid { grid-template-columns: 1fr; }
+    .rating-grid { grid-template-columns: 1fr; }
+    .header-card { padding: 24px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FLOATING STARS -->
+<div class="stars">
+  <div class="star">⭐</div>
+  <div class="star">🌟</div>
+  <div class="star">✨</div>
+  <div class="star">⭐</div>
+  <div class="star">🌟</div>
+  <div class="star">✨</div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-card">
+    <span class="header-emoji">🚀</span>
+    <h1>English Adventure!</h1>
+    <p>Let's find out how much English you know! 🌍✨</p>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-info">
+    <span id="progressText">Ready to start? 🎯</span>
+    <span class="stars-earned" id="starsEarned">⭐ 0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<!-- EXAM BODY -->
+<div class="exam-body">
+
+  <!-- STUDENT INFO -->
+  <div class="info-card">
+    <h2>👋 Tell us about you!</h2>
+    <div class="info-grid">
+      <div class="field-group">
+        <label>My name is</label>
+        <input type="text" id="studentName" placeholder="Your name here 😊">
+      </div>
+      <div class="field-group">
+        <label>Today's date</label>
+        <input type="date" id="examDate">
+      </div>
+      <div class="field-group">
+        <label>My age</label>
+        <input type="number" id="studentAge" placeholder="9 or 11?" min="5" max="18">
+      </div>
+      <div class="field-group">
+        <label>My school</label>
+        <input type="text" id="studentSchool" placeholder="My school name">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: GRAMMAR -->
+  <div class="section-block">
+    <div class="section-header blue">
+      <span class="section-emoji">📝</span>
+      <div class="section-title">
+        <h2>Grammar Fun!</h2>
+        <p>Choose the best answer for each question — 12 questions</p>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc1">
+      <div class="q-number">1</div>
+      <div class="q-text">What is this? 🐶<br><em>"___ is a dog."</em></div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g1" value="A"><div class="opt-bubble">A</div> He</label>
+        <label class="opt"><input type="radio" name="g1" value="B"><div class="opt-bubble">B</div> This</label>
+        <label class="opt"><input type="radio" name="g1" value="C"><div class="opt-bubble">C</div> They</label>
+        <label class="opt"><input type="radio" name="g1" value="D"><div class="opt-bubble">D</div> We</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc2">
+      <div class="q-number">2</div>
+      <div class="q-text">Look at the picture 🍎🍎🍎<br><em>"There ___ three apples."</em></div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g2" value="A"><div class="opt-bubble">A</div> is</label>
+        <label class="opt"><input type="radio" name="g2" value="B"><div class="opt-bubble">B</div> are</label>
+        <label class="opt"><input type="radio" name="g2" value="C"><div class="opt-bubble">C</div> am</label>
+        <label class="opt"><input type="radio" name="g2" value="D"><div class="opt-bubble">D</div> be</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc3">
+      <div class="q-number">3</div>
+      <div class="q-text">My friend Tom ___ soccer every day. ⚽</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g3" value="A"><div class="opt-bubble">A</div> play</label>
+        <label class="opt"><input type="radio" name="g3" value="B"><div class="opt-bubble">B</div> plays</label>
+        <label class="opt"><input type="radio" name="g3" value="C"><div class="opt-bubble">C</div> playing</label>
+        <label class="opt"><input type="radio" name="g3" value="D"><div class="opt-bubble">D</div> played</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc4">
+      <div class="q-number">4</div>
+      <div class="q-text">Yesterday I ___ to the park with my mom. 🌳</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g4" value="A"><div class="opt-bubble">A</div> go</label>
+        <label class="opt"><input type="radio" name="g4" value="B"><div class="opt-bubble">B</div> goes</label>
+        <label class="opt"><input type="radio" name="g4" value="C"><div class="opt-bubble">C</div> went</label>
+        <label class="opt"><input type="radio" name="g4" value="D"><div class="opt-bubble">D</div> going</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc5">
+      <div class="q-number">5</div>
+      <div class="q-text">___ you like ice cream? 🍦</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g5" value="A"><div class="opt-bubble">A</div> Are</label>
+        <label class="opt"><input type="radio" name="g5" value="B"><div class="opt-bubble">B</div> Do</label>
+        <label class="opt"><input type="radio" name="g5" value="C"><div class="opt-bubble">C</div> Is</label>
+        <label class="opt"><input type="radio" name="g5" value="D"><div class="opt-bubble">D</div> Does</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc6">
+      <div class="q-number">6</div>
+      <div class="q-text">The elephant is ___ than the cat. 🐘🐱</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g6" value="A"><div class="opt-bubble">A</div> big</label>
+        <label class="opt"><input type="radio" name="g6" value="B"><div class="opt-bubble">B</div> more big</label>
+        <label class="opt"><input type="radio" name="g6" value="C"><div class="opt-bubble">C</div> bigger</label>
+        <label class="opt"><input type="radio" name="g6" value="D"><div class="opt-bubble">D</div> biggest</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc7">
+      <div class="q-number">7</div>
+      <div class="q-text">Complete the sentence! ✍️<br>
+        "I have <input class="blank" id="g7a" placeholder="______"> pencils in <input class="blank" id="g7b" placeholder="______"> backpack."
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--muted);margin-top:8px">💡 Write: two / my</div>
+    </div>
+
+    <div class="q-card" id="qc8">
+      <div class="q-number">8</div>
+      <div class="q-text">Right now, she ___ a book. 📚</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g8" value="A"><div class="opt-bubble">A</div> reads</label>
+        <label class="opt"><input type="radio" name="g8" value="B"><div class="opt-bubble">B</div> is reading</label>
+        <label class="opt"><input type="radio" name="g8" value="C"><div class="opt-bubble">C</div> read</label>
+        <label class="opt"><input type="radio" name="g8" value="D"><div class="opt-bubble">D</div> was reading</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc9">
+      <div class="q-number">9</div>
+      <div class="q-text">Which sentence is correct? 🤔</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g9" value="A"><div class="opt-bubble">A</div> I have 9 years old.</label>
+        <label class="opt"><input type="radio" name="g9" value="B"><div class="opt-bubble">B</div> I am 9 years old.</label>
+        <label class="opt"><input type="radio" name="g9" value="C"><div class="opt-bubble">C</div> I is 9 years old.</label>
+        <label class="opt"><input type="radio" name="g9" value="D"><div class="opt-bubble">D</div> I be 9 years old.</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc10">
+      <div class="q-number">10</div>
+      <div class="q-text">🌈 What color is the sky? Write your answer:<br><br>
+        <textarea class="q-textarea" id="g10text" placeholder="The sky is _________ ..." rows="2"></textarea>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc11">
+      <div class="q-number">11</div>
+      <div class="q-text">What does <em>"happy"</em> mean? 😄</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g11" value="A"><div class="opt-bubble">A</div> Triste</label>
+        <label class="opt"><input type="radio" name="g11" value="B"><div class="opt-bubble">B</div> Enojado</label>
+        <label class="opt"><input type="radio" name="g11" value="C"><div class="opt-bubble">C</div> Feliz</label>
+        <label class="opt"><input type="radio" name="g11" value="D"><div class="opt-bubble">D</div> Cansado</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qc12">
+      <div class="q-number">12</div>
+      <div class="q-text">If I ___ a bird, I would fly everywhere! 🐦</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="g12" value="A"><div class="opt-bubble">A</div> am</label>
+        <label class="opt"><input type="radio" name="g12" value="B"><div class="opt-bubble">B</div> was</label>
+        <label class="opt"><input type="radio" name="g12" value="C"><div class="opt-bubble">C</div> were</label>
+        <label class="opt"><input type="radio" name="g12" value="D"><div class="opt-bubble">D</div> be</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: READING -->
+  <div class="section-block">
+    <div class="section-header green">
+      <span class="section-emoji">📖</span>
+      <div class="section-title">
+        <h2>Reading Time!</h2>
+        <p>Read the stories and answer the questions</p>
+      </div>
+    </div>
+
+    <!-- PASSAGE 1 -->
+    <div class="passage-box">
+      <div class="passage-title">Story 1 — My Best Friend Max 🐕</div>
+      <div class="passage-text">
+        My name is Lucy. I have a dog named Max. Max is big and brown. He has a long tail and big ears. Max loves to run and play in the garden. Every morning, Max wakes me up by licking my face! He is my best friend. After school, we always go for a walk together. Max is very friendly and he never barks at strangers. My mom says Max is the best dog in the world, and I agree!
+      </div>
+    </div>
+
+    <div class="q-card" id="qr1">
+      <div class="q-number">R1</div>
+      <div class="q-text">What color is Max? 🎨</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="r1" value="A"><div class="opt-bubble">A</div> Black and white</label>
+        <label class="opt"><input type="radio" name="r1" value="B"><div class="opt-bubble">B</div> Big and brown</label>
+        <label class="opt"><input type="radio" name="r1" value="C"><div class="opt-bubble">C</div> Small and yellow</label>
+        <label class="opt"><input type="radio" name="r1" value="D"><div class="opt-bubble">D</div> Gray and fluffy</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qr2">
+      <div class="q-number">R2</div>
+      <div class="q-text">How does Max wake Lucy up? ☀️</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="r2" value="A"><div class="opt-bubble">A</div> By barking loudly</label>
+        <label class="opt"><input type="radio" name="r2" value="B"><div class="opt-bubble">B</div> By jumping on the bed</label>
+        <label class="opt"><input type="radio" name="r2" value="C"><div class="opt-bubble">C</div> By licking her face</label>
+        <label class="opt"><input type="radio" name="r2" value="D"><div class="opt-bubble">D</div> By scratching the door</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qr3">
+      <div class="q-number">R3</div>
+      <div class="q-text">When do Lucy and Max go for a walk? 🦮</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="r3" value="A"><div class="opt-bubble">A</div> Before breakfast</label>
+        <label class="opt"><input type="radio" name="r3" value="B"><div class="opt-bubble">B</div> After school</label>
+        <label class="opt"><input type="radio" name="r3" value="C"><div class="opt-bubble">C</div> On weekends</label>
+        <label class="opt"><input type="radio" name="r3" value="D"><div class="opt-bubble">D</div> At night</label>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-number">R4</div>
+      <div class="q-text">✍️ Write 1 or 2 sentences about YOUR pet or an animal you like!</div>
+      <textarea class="q-textarea" id="r4text" placeholder="I have a cat named... / I like dogs because..." rows="3"></textarea>
+    </div>
+
+    <!-- PASSAGE 2 -->
+    <div class="passage-box" style="background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border-color: var(--blue);">
+      <div class="passage-title" style="color: var(--blue-dark);">Story 2 — A Trip to Space 🚀</div>
+      <div class="passage-text">
+        Last night, I had an amazing dream. I was an astronaut! I put on my big white spacesuit and flew to the moon. The moon was very quiet and there was no air to breathe. I could see Earth from far away — it looked like a beautiful blue and green ball. I also saw millions of stars. They were everywhere! When I woke up, I decided that I want to be an astronaut when I grow up. Space is the most exciting place in the universe!
+      </div>
+    </div>
+
+    <div class="q-card" id="qr5">
+      <div class="q-number">R5</div>
+      <div class="q-text">What was the dream about? 💭</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="r5" value="A"><div class="opt-bubble">A</div> Going to the beach</label>
+        <label class="opt"><input type="radio" name="r5" value="B"><div class="opt-bubble">B</div> Flying to the moon</label>
+        <label class="opt"><input type="radio" name="r5" value="C"><div class="opt-bubble">C</div> Meeting aliens</label>
+        <label class="opt"><input type="radio" name="r5" value="D"><div class="opt-bubble">D</div> Driving a race car</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="qr6">
+      <div class="q-number">R6</div>
+      <div class="q-text">What did Earth look like from space? 🌍</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="r6" value="A"><div class="opt-bubble">A</div> A red and orange ball</label>
+        <label class="opt"><input type="radio" name="r6" value="B"><div class="opt-bubble">B</div> A tiny white dot</label>
+        <label class="opt"><input type="radio" name="r6" value="C"><div class="opt-bubble">C</div> A beautiful blue and green ball</label>
+        <label class="opt"><input type="radio" name="r6" value="D"><div class="opt-bubble">D</div> A big yellow star</label>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-number">R7</div>
+      <div class="q-text">✍️ What do YOU want to be when you grow up? Write 2 sentences in English!</div>
+      <textarea class="q-textarea" id="r7text" placeholder="When I grow up, I want to be a... because..." rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 3: LISTENING -->
+  <div class="section-block">
+    <div class="section-header" style="background: linear-gradient(135deg, #7C3AED, #4F46E5); box-shadow: 0 6px 20px rgba(124,58,237,0.4);">
+      <span class="section-emoji">🎧</span>
+      <div class="section-title">
+        <h2>Listening Fun!</h2>
+        <p>Listen and answer the questions below</p>
+      </div>
+    </div>
+
+    <div class="listen-box">
+      <button class="listen-play" onclick="playAudio()">🔊</button>
+      <div class="listen-info">
+        <div class="listen-title">🎵 A Day at the Zoo</div>
+        <div class="listen-meta">Short dialogue · About 40 seconds</div>
+      </div>
+    </div>
+
+    <button class="show-script" onclick="toggleScript()">👀 Show the text</button>
+    <div class="script-box" id="scriptBox">
+      <strong>Teacher:</strong> Hi class! Today we're going to talk about a trip to the zoo. Sam, did you like the zoo?<br>
+      <strong>Sam:</strong> Yes! It was amazing! I saw lions, giraffes, and monkeys!<br>
+      <strong>Teacher:</strong> Wonderful! What was your favorite animal?<br>
+      <strong>Sam:</strong> My favorite was the giraffe because it has a very long neck!<br>
+      <strong>Teacher:</strong> And what did you eat there?<br>
+      <strong>Sam:</strong> I ate an ice cream and my mom had a sandwich. It was delicious!<br>
+      <strong>Teacher:</strong> Great! Did you take any photos?<br>
+      <strong>Sam:</strong> Yes, I took lots of photos with my dad's phone!
+    </div>
+
+    <div class="q-card" id="ql1">
+      <div class="q-number">L1</div>
+      <div class="q-text">What animals did Sam see at the zoo? 🦁</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="l1" value="A"><div class="opt-bubble">A</div> Bears, elephants, and snakes</label>
+        <label class="opt"><input type="radio" name="l1" value="B"><div class="opt-bubble">B</div> Lions, giraffes, and monkeys</label>
+        <label class="opt"><input type="radio" name="l1" value="C"><div class="opt-bubble">C</div> Tigers, pandas, and birds</label>
+        <label class="opt"><input type="radio" name="l1" value="D"><div class="opt-bubble">D</div> Dogs, cats, and rabbits</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="ql2">
+      <div class="q-number">L2</div>
+      <div class="q-text">Why is the giraffe Sam's favorite animal? 🦒</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="l2" value="A"><div class="opt-bubble">A</div> Because it is very fast</label>
+        <label class="opt"><input type="radio" name="l2" value="B"><div class="opt-bubble">B</div> Because it is very funny</label>
+        <label class="opt"><input type="radio" name="l2" value="C"><div class="opt-bubble">C</div> Because it has a very long neck</label>
+        <label class="opt"><input type="radio" name="l2" value="D"><div class="opt-bubble">D</div> Because it is very colorful</label>
+      </div>
+    </div>
+
+    <div class="q-card" id="ql3">
+      <div class="q-number">L3</div>
+      <div class="q-text">What did Sam eat at the zoo? 🍦</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="l3" value="A"><div class="opt-bubble">A</div> A hot dog</label>
+        <label class="opt"><input type="radio" name="l3" value="B"><div class="opt-bubble">B</div> A sandwich</label>
+        <label class="opt"><input type="radio" name="l3" value="C"><div class="opt-bubble">C</div> An ice cream</label>
+        <label class="opt"><input type="radio" name="l3" value="D"><div class="opt-bubble">D</div> A pizza</label>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-number">L4</div>
+      <div class="q-text">✍️ What is YOUR favorite animal? Write 1-2 sentences!</div>
+      <textarea class="q-textarea" id="l4text" placeholder="My favorite animal is a... because..." rows="2"></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 4: ORAL -->
+  <div class="section-block">
+    <div class="section-header pink">
+      <span class="section-emoji">🎤</span>
+      <div class="section-title">
+        <h2>Speaking Time!</h2>
+        <p>Press the button and talk! Don't be shy 😊</p>
+      </div>
+    </div>
+
+    <div class="speak-card">
+      <div class="speak-prompt">🗣️ <strong>Talk 1 — Say hello!</strong><br>Tell us your name, how old you are, and where you live.</div>
+      <div class="speak-tip">💡 Try to say: "My name is… I am … years old. I live in…"</div>
+      <button class="rec-btn" id="recBtn1" onclick="toggleRecord(1)">🎙️ Start Talking!</button>
+      <div class="rec-status" id="recStatus1"></div>
+    </div>
+
+    <div class="speak-card">
+      <div class="speak-prompt">🗣️ <strong>Talk 2 — Your favorite things!</strong><br>Tell us about your favorite color, food, and subject at school.</div>
+      <div class="speak-tip">💡 Try to say: "My favorite color is… I love to eat… My favorite subject is…"</div>
+      <button class="rec-btn" id="recBtn2" onclick="toggleRecord(2)">🎙️ Start Talking!</button>
+      <div class="rec-status" id="recStatus2"></div>
+    </div>
+
+    <div class="speak-card">
+      <div class="speak-prompt">🗣️ <strong>Talk 3 — Describe a picture!</strong><br>Look around you right now. Tell us 3 things you can see!</div>
+      <div class="speak-tip">💡 Try to say: "I can see a… There is a… Next to me there is a…"</div>
+      <button class="rec-btn" id="recBtn3" onclick="toggleRecord(3)">🎙️ Start Talking!</button>
+      <div class="rec-status" id="recStatus3"></div>
+    </div>
+
+    <!-- TUTOR NOTES -->
+    <div class="tutor-box">
+      <h3>⭐ Tutor's Notes (For teacher only)</h3>
+      <div class="rating-grid">
+        <div class="field-group">
+          <label>Pronunciation (1–5)</label>
+          <input type="number" min="1" max="5" id="pronunc" placeholder="e.g. 3">
+        </div>
+        <div class="field-group">
+          <label>Confidence (1–5)</label>
+          <input type="number" min="1" max="5" id="confidence" placeholder="e.g. 3">
+        </div>
+        <div class="field-group">
+          <label>Vocabulary (1–5)</label>
+          <input type="number" min="1" max="5" id="vocab" placeholder="e.g. 3">
+        </div>
+        <div class="field-group">
+          <label>Fluency (1–5)</label>
+          <input type="number" min="1" max="5" id="fluency" placeholder="e.g. 3">
+        </div>
+      </div>
+      <textarea class="q-textarea" id="tutorNotes" placeholder="General observations about this student…" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-wrap">
+    <p style="font-size:15px;font-weight:700;color:var(--muted);margin-bottom:16px">🎉 Did you finish? Click below to see your results!</p>
+    <button class="submit-btn" onclick="submitExam()">🚀 See My Results!</button>
+  </div>
+
+</div>
+
+<!-- RESULTS -->
+<div class="results-panel" id="resultsPanel">
+  <div class="results-card">
+    <span class="results-emoji" id="resultsEmoji">🎉</span>
+    <div class="results-title">Amazing job!</div>
+    <div class="results-name" id="resultsName"></div>
+    <div class="level-badge" id="levelBadge">Calculating…</div>
+    <div class="scores-grid">
+      <div class="score-item">
+        <div class="score-emoji">📝</div>
+        <div class="score-num" id="grammarScore">—</div>
+        <div class="score-lbl">Grammar</div>
+      </div>
+      <div class="score-item">
+        <div class="score-emoji">📖</div>
+        <div class="score-num" id="readingScore">—</div>
+        <div class="score-lbl">Reading</div>
+      </div>
+      <div class="score-item">
+        <div class="score-emoji">🎧</div>
+        <div class="score-num" id="listenScore">—</div>
+        <div class="score-lbl">Listening</div>
+      </div>
+    </div>
+    <div class="level-desc" id="levelDesc"></div>
+    <div class="tutor-rec" id="tutorRec"></div>
+    <div class="formspree-status" id="formspreeStatus"></div>
+    <button class="print-btn" onclick="window.print()">🖨️ Print Results</button>
+  </div>
+</div>
+
+<script>
+// ANSWERS
+const answers = {
+  g1:'B', g2:'B', g3:'B', g4:'C', g5:'B', g6:'C', g8:'B', g9:'B', g11:'C', g12:'C',
+  r1:'B', r2:'C', r3:'B', r5:'B', r6:'C',
+  l1:'B', l2:'C', l3:'C'
+};
+
+// PROGRESS
+function updateProgress() {
+  const names = ['g1','g2','g3','g4','g5','g6','g8','g9','g11','g12','r1','r2','r3','r5','r6','l1','l2','l3'];
+  let done = 0;
+  names.forEach(n => { if (document.querySelector(`input[name="${n}"]:checked`)) done++; });
+  const pct = Math.round((done / names.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('starsEarned').textContent = `⭐ ${pct}%`;
+  const msgs = ['Ready to start? 🎯','Great start! Keep going! 💪','You\'re doing amazing! 🌟','Almost done! 🚀','All done! Click submit! 🎉'];
+  document.getElementById('progressText').textContent = msgs[Math.floor(pct/25)];
+  // Mark answered cards
+  names.forEach(n => {
+    const checked = document.querySelector(`input[name="${n}"]:checked`);
+    const card = document.querySelector(`input[name="${n}"]`)?.closest('.q-card');
+    if (card) card.classList.toggle('answered', !!checked);
+  });
+}
+document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateProgress));
+
+// AUDIO
+function playAudio() {
+  alert('🎧 In your live session, the teacher will read this dialogue aloud. Click "Show the text" to read it yourself!');
+}
+
+// SCRIPT TOGGLE
+function toggleScript() {
+  const box = document.getElementById('scriptBox');
+  const btn = document.querySelector('.show-script');
+  box.classList.toggle('visible');
+  btn.textContent = box.classList.contains('visible') ? '🙈 Hide the text' : '👀 Show the text';
+}
+
+// RECORDING
+let recTimers = {}, recIntervals = {};
+function toggleRecord(n) {
+  const btn = document.getElementById('recBtn' + n);
+  const status = document.getElementById('recStatus' + n);
+  if (btn.classList.contains('recording')) {
+    btn.classList.remove('recording');
+    btn.textContent = '🎙️ Start Talking!';
+    clearInterval(recIntervals[n]);
+    const s = recTimers[n] || 0;
+    status.innerHTML = `✅ Recorded! <span class="rec-timer">${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}</span> — Great job! 🌟`;
+  } else {
+    btn.classList.add('recording');
+    btn.textContent = '⏹️ Stop Recording';
+    recTimers[n] = 0;
+    status.innerHTML = `🔴 Recording… <span class="rec-timer" id="rt${n}">0:00</span>`;
+    recIntervals[n] = setInterval(() => {
+      recTimers[n]++;
+      const el = document.getElementById('rt' + n);
+      if (el) el.textContent = `${Math.floor(recTimers[n]/60)}:${String(recTimers[n]%60).padStart(2,'0')}`;
+    }, 1000);
+  }
+}
+
+// CONFETTI
+function launchConfetti() {
+  const colors = ['#FCD34D','#34D399','#F472B6','#3B82F6','#A78BFA','#FB923C'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDelay = Math.random() * 2 + 's';
+    c.style.animationDuration = (2 + Math.random() * 2) + 's';
+    c.style.transform = `rotate(${Math.random() * 360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+// SUBMIT
+async function submitExam() {
+  let gCorrect = 0, rCorrect = 0, lCorrect = 0;
+  const gQs = ['g1','g2','g3','g4','g5','g6','g8','g9','g11','g12'];
+  const rQs = ['r1','r2','r3','r5','r6'];
+  const lQs = ['l1','l2','l3'];
+
+  gQs.forEach(n => { const s = document.querySelector(`input[name="${n}"]:checked`); if (s && s.value === answers[n]) gCorrect++; });
+  rQs.forEach(n => { const s = document.querySelector(`input[name="${n}"]:checked`); if (s && s.value === answers[n]) rCorrect++; });
+  lQs.forEach(n => { const s = document.querySelector(`input[name="${n}"]:checked`); if (s && s.value === answers[n]) lCorrect++; });
+
+  const gPct = Math.round((gCorrect/10)*100);
+  const rPct = Math.round((rCorrect/5)*100);
+  const lPct = Math.round((lCorrect/3)*100);
+  const avg  = Math.round((gPct + rPct + lPct) / 3);
+
+  let level, desc, rec, emoji;
+  if (avg < 30) {
+    level = '🌱 Starter'; emoji = '🌱';
+    desc = 'This student is just beginning their English journey! They can recognize a few words and simple phrases.';
+    rec  = 'Focus on basic vocabulary: colors, numbers, animals, family members. Use songs, flashcards, and games. Keep sessions fun and short (20-30 min). Use lots of visual support.';
+  } else if (avg < 55) {
+    level = '🌟 Beginner'; emoji = '🌟';
+    desc = 'This student knows some basic English! They can understand simple sentences and respond with short phrases.';
+    rec  = 'Work on present simple tense, basic question forms, and everyday vocabulary. Introduce simple reading with picture books. Practice "What is this?", "I like…", "I have…"';
+  } else if (avg < 75) {
+    level = '🚀 Elementary'; emoji = '🚀';
+    desc = 'Great progress! This student can communicate in familiar topics and understands simple texts.';
+    rec  = 'Introduce past simple, comparative adjectives, and more complex sentences. Use stories, short videos, and dialogues. Encourage speaking in full sentences.';
+  } else {
+    level = '⭐ Pre-Intermediate'; emoji = '🏆';
+    desc = 'Excellent! This student shows strong foundations and can handle a variety of everyday English topics.';
+    rec  = 'Challenge with present perfect, conditionals, and richer vocabulary. Introduce guided writing, creative storytelling, and opinion questions.';
+  }
+
+  const name = document.getElementById('studentName').value || 'Student';
+  document.getElementById('resultsEmoji').textContent = emoji;
+  document.getElementById('resultsName').textContent = `Great work, ${name}! 🎊`;
+  document.getElementById('levelBadge').textContent = level;
+  document.getElementById('grammarScore').textContent = `${gCorrect}/10`;
+  document.getElementById('readingScore').textContent = `${rCorrect}/5`;
+  document.getElementById('listenScore').textContent   = `${lCorrect}/3`;
+  document.getElementById('levelDesc').innerHTML = `<strong>📊 Level Description:</strong><br>${desc}`;
+  document.getElementById('tutorRec').innerHTML  = `<strong>💡 Tutor Recommendations:</strong><br>${rec}`;
+
+  document.getElementById('resultsPanel').classList.add('visible');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+  launchConfetti();
+
+  // FORMSPREE
+  const payload = {
+    _subject: `🎓 Kids Exam — ${name} — ${level}`,
+    '👤 Student Name':    name,
+    '🎂 Age':             document.getElementById('studentAge').value || '—',
+    '🏫 School':          document.getElementById('studentSchool').value || '—',
+    '📅 Date':            document.getElementById('examDate').value || '—',
+    '─── SCORES ───':     '───────────────',
+    '🏆 Level':           level,
+    '📝 Grammar':         `${gCorrect}/10 (${gPct}%)`,
+    '📖 Reading':         `${rCorrect}/5 (${rPct}%)`,
+    '🎧 Listening':       `${lCorrect}/3 (${lPct}%)`,
+    '─── WRITTEN ───':    '───────────────',
+    '🌈 Favorite color':  document.getElementById('g10text').value || '—',
+    '🐾 My pet/animal':   document.getElementById('r4text').value  || '—',
+    '🚀 Future job':      document.getElementById('r7text').value  || '—',
+    '🦒 Fav animal':      document.getElementById('l4text').value  || '—',
+    '─── TUTOR ───':      '───────────────',
+    '🗣️ Oral Notes':      document.getElementById('tutorNotes').value || '—',
+    '💡 Recommendations': rec,
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/xjgzqqol', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const statusEl = document.getElementById('formspreeStatus');
+    if (res.ok) {
+      statusEl.textContent = '✅ Results sent to your tutor!';
+      statusEl.style.color = '#059669';
+    } else {
+      statusEl.textContent = '⚠️ Could not send automatically. Please take a screenshot!';
+      statusEl.style.color = '#D97706';
+    }
+  } catch(e) {
+    document.getElementById('formspreeStatus').textContent = '⚠️ Could not send automatically. Please take a screenshot!';
+    document.getElementById('formspreeStatus').style.color = '#D97706';
+  }
+}
+
+document.getElementById('examDate').valueAsDate = new Date();
+</script>
+</body>
+</html>
