@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Placement Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F9F5EE;
+    --warm-white: #FFFDF8;
+    --ink: #1C1A16;
+    --gold: #C9A84C;
+    --gold-light: #E8D08A;
+    --rust: #8B4513;
+    --sage: #5C7A5C;
+    --muted: #7A7060;
+    --border: #DDD5C0;
+    --section-bg: #F2EDE2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 48px 40px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(201,168,76,0.04) 40px,
+      rgba(201,168,76,0.04) 41px
+    );
+  }
+  .header-inner { position: relative; z-index: 1; }
+  .header-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .header h1 span { color: var(--gold); }
+  .header p {
+    color: rgba(249,245,238,0.65);
+    font-style: italic;
+    font-size: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--ink);
+    padding: 0 40px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-track {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    color: rgba(249,245,238,0.4);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* STUDENT INFO */
+  .info-section {
+    max-width: 860px;
+    margin: 48px auto 0;
+    padding: 0 24px;
+  }
+  .info-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold);
+    padding: 32px 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 32px;
+  }
+  .info-card h2 {
+    grid-column: 1 / -1;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .field-group input {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--border);
+    padding: 8px 0;
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field-group input:focus { border-color: var(--gold); }
+
+  /* SECTIONS */
+  .exam-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .section-block {
+    margin-bottom: 52px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .section-block:nth-child(2) { animation-delay: 0.1s; }
+  .section-block:nth-child(3) { animation-delay: 0.2s; }
+  .section-block:nth-child(4) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .section-title-group h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .section-title-group p {
+    color: var(--muted);
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* QUESTIONS */
+  .question-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .question-card::before {
+    content: attr(data-q);
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-size: 11px;
+    color: var(--border);
+    letter-spacing: 1px;
+  }
+  .question-text {
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .question-text strong { color: var(--rust); font-weight: 600; }
+
+  /* MULTIPLE CHOICE */
+  .options-grid { display: flex; flex-direction: column; gap: 10px; }
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    transition: all 0.15s ease;
+    font-size: 15px;
+    user-select: none;
+  }
+  .option-label:hover { border-color: var(--gold); background: #FAF7EF; }
+  .option-label input[type="radio"] { display: none; }
+  .option-label input[type="radio"]:checked + .option-check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .option-label input[type="radio"]:checked + .option-check::after { opacity: 1; }
+  .option-label:has(input:checked) {
+    border-color: var(--gold);
+    background: #FBF7EC;
+  }
+  .option-check {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.15s;
+  }
+  .option-check::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .option-letter {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    width: 18px;
+  }
+
+  /* FILL IN THE BLANK */
+  .blank-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--gold);
+    padding: 2px 8px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    color: var(--ink);
+    outline: none;
+    min-width: 120px;
+    text-align: center;
+  }
+  .blank-input:focus { border-bottom-color: var(--rust); }
+
+  /* TEXT AREA */
+  .text-response {
+    width: 100%;
+    min-height: 100px;
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    padding: 14px 16px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    resize: vertical;
+    line-height: 1.7;
+    transition: border-color 0.2s;
+  }
+  .text-response:focus { border-color: var(--gold); }
+
+  /* LISTENING SECTION */
+  .audio-player {
+    background: var(--ink);
+    border-radius: 2px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .play-btn {
+    width: 48px;
+    height: 48px;
+    background: var(--gold);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .play-btn:hover { background: var(--gold-light); transform: scale(1.05); }
+  .play-btn svg { width: 18px; height: 18px; fill: var(--ink); margin-left: 2px; }
+  .audio-info { flex: 1; }
+  .audio-track-name {
+    color: var(--cream);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .audio-meta { color: rgba(249,245,238,0.4); font-size: 12px; }
+  .audio-wave {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 32px;
+  }
+  .wave-bar {
+    width: 3px;
+    background: rgba(201,168,76,0.3);
+    border-radius: 2px;
+    animation: wave 1.2s ease-in-out infinite;
+  }
+  .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 60%; }
+  .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 90%; }
+  .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 50%; }
+  .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 80%; }
+  .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 40%; }
+  .wave-bar:nth-child(7) { animation-delay: 0.15s; height: 70%; }
+  .wave-bar:nth-child(8) { animation-delay: 0.35s; height: 55%; }
+  .wave-bar.playing { background: var(--gold); }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+
+  .transcript-box {
+    background: var(--section-bg);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.8;
+    display: none;
+  }
+  .transcript-box.visible { display: block; }
+  .show-transcript-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    padding: 6px 16px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.15s;
+  }
+  .show-transcript-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ORAL SECTION */
+  .speaking-card {
+    background: var(--section-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--sage);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .speaking-prompt {
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+  .speaking-note {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .record-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--sage);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .record-btn:hover { background: #4A6B4A; }
+  .record-btn.recording { background: var(--rust); animation: pulse 1.5s ease-in-out infinite; }
+  .record-btn svg { width: 16px; height: 16px; fill: currentColor; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+  .recording-status {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    min-height: 20px;
+  }
+  .timer { color: var(--rust); font-weight: 600; }
+
+  .tutor-note {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 10px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    font-style: italic;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .tutor-note::before { content: '✦'; color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+
+  /* SUBMIT */
+  .submit-section {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1.5px solid var(--border);
+    margin-top: 20px;
+  }
+  .submit-btn {
+    background: var(--ink);
+    color: var(--cream);
+    border: 2px solid var(--ink);
+    padding: 16px 52px;
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+  .submit-btn:hover::after { transform: translateX(0); }
+  .submit-btn:hover { border-color: var(--gold); color: var(--ink); }
+  .submit-btn span { position: relative; z-index: 1; }
+
+  /* RESULTS */
+  .results-panel {
+    display: none;
+    max-width: 860px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+  .results-panel.visible { display: block; }
+  .results-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--gold);
+    padding: 40px;
+    text-align: center;
+  }
+  .results-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  .results-subtitle {
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 32px;
+  }
+  .score-display {
+    display: inline-block;
+    border: 2px solid var(--gold);
+    padding: 20px 48px;
+    margin-bottom: 32px;
+  }
+  .score-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .score-label { font-size: 13px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+  .level-badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--gold);
+    padding: 8px 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .results-breakdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+  .breakdown-item {
+    background: var(--section-bg);
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+  }
+  .breakdown-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .breakdown-score { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--ink); font-weight: 600; }
+  .results-notes {
+    text-align: left;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .results-notes h4 { font-family: 'Playfair Display', serif; margin-bottom: 10px; font-size: 1.1rem; }
+  .results-notes p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header { padding: 36px 24px 32px; }
+    .info-card { grid-template-columns: 1fr; }
+    .results-breakdown { grid-template-columns: 1fr; }
+    .section-number { font-size: 2.2rem; }
+    .progress-wrap { padding: 0 24px 18px; }
+  }
+
+  /* DIVIDER */
+  .ornament { text-align: center; color: var(--gold); letter-spacing: 12px; font-size: 13px; margin: 36px 0; opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">English Placement Exam</div>
+    <h1>English <span>Proficiency</span><br>Assessment</h1>
+    <p>A comprehensive evaluation of grammar, listening comprehension, and spoken communication</p>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="progressText">Getting started…</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<!-- STUDENT INFO -->
+<div class="info-section">
+  <div class="info-card">
+    <h2>Student Information</h2>
+    <div class="field-group">
+      <label>Full Name</label>
+      <input type="text" id="studentName" placeholder="Your name here">
+    </div>
+    <div class="field-group">
+      <label>Date</label>
+      <input type="date" id="examDate">
+    </div>
+    <div class="field-group">
+      <label>Age</label>
+      <input type="number" id="studentAge" placeholder="e.g. 45" min="18" max="99">
+    </div>
+    <div class="field-group">
+      <label>Previous English Experience</label>
+      <input type="text" id="prevExp" placeholder="e.g. School, Travel, None">
+    </div>
+  </div>
+</div>
+
+<!-- EXAM BODY -->
+<div class="exam-body">
+
+  <!-- SECTION 1: GRAMMAR -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title-group">
+        <h2>Grammar & Vocabulary</h2>
+        <p>Choose the best option or complete the sentence — 15 questions</p>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question-card" data-q="Q1">
+      <div class="question-text">1. She _____ to the market every Saturday morning.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q1" value="A"><span class="option-check"></span><span class="option-letter">A</span> go</label>
+        <label class="option-label"><input type="radio" name="q1" value="B"><span class="option-check"></span><span class="option-letter">B</span> goes</label>
+        <label class="option-label"><input type="radio" name="q1" value="C"><span class="option-check"></span><span class="option-letter">C</span> is going</label>
+        <label class="option-label"><input type="radio" name="q1" value="D"><span class="option-check"></span><span class="option-letter">D</span> gone</label>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card" data-q="Q2">
+      <div class="question-text">2. We _____ dinner when the phone rang.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q2" value="A"><span class="option-check"></span><span class="option-letter">A</span> were having</label>
+        <label class="option-label"><input type="radio" name="q2" value="B"><span class="option-check"></span><span class="option-letter">B</span> had</label>
+        <label class="option-label"><input type="radio" name="q2" value="C"><span class="option-check"></span><span class="option-letter">C</span> have</label>
+        <label class="option-label"><input type="radio" name="q2" value="D"><span class="option-check"></span><span class="option-letter">D</span> are having</label>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card" data-q="Q3">
+      <div class="question-text">3. I have lived in this city _____ ten years.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q3" value="A"><span class="option-check"></span><span class="option-letter">A</span> since</label>
+        <label class="option-label"><input type="radio" name="q3" value="B"><span class="option-check"></span><span class="option-letter">B</span> for</label>
+        <label class="option-label"><input type="radio" name="q3" value="C"><span class="option-check"></span><span class="option-letter">C</span> ago</label>
+        <label class="option-label"><input type="radio" name="q3" value="D"><span class="option-check"></span><span class="option-letter">D</span> during</label>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card" data-q="Q4">
+      <div class="question-text">4. If it _____ tomorrow, we will stay home.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q4" value="A"><span class="option-check"></span><span class="option-letter">A</span> rained</label>
+        <label class="option-label"><input type="radio" name="q4" value="B"><span class="option-check"></span><span class="option-letter">B</span> rains</label>
+        <label class="option-label"><input type="radio" name="q4" value="C"><span class="option-check"></span><span class="option-letter">C</span> will rain</label>
+        <label class="option-label"><input type="radio" name="q4" value="D"><span class="option-check"></span><span class="option-letter">D</span> is raining</label>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card" data-q="Q5">
+      <div class="question-text">5. That was _____ movie I have ever seen!</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q5" value="A"><span class="option-check"></span><span class="option-letter">A</span> the more interesting</label>
+        <label class="option-label"><input type="radio" name="q5" value="B"><span class="option-check"></span><span class="option-letter">B</span> the most interesting</label>
+        <label class="option-label"><input type="radio" name="q5" value="C"><span class="option-check"></span><span class="option-letter">C</span> more interesting</label>
+        <label class="option-label"><input type="radio" name="q5" value="D"><span class="option-check"></span><span class="option-letter">D</span> most interesting</label>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-card" data-q="Q6">
+      <div class="question-text">6. She _____ already left when I arrived.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q6" value="A"><span class="option-check"></span><span class="option-letter">A</span> has</label>
+        <label class="option-label"><input type="radio" name="q6" value="B"><span class="option-check"></span><span class="option-letter">B</span> had</label>
+        <label class="option-label"><input type="radio" name="q6" value="C"><span class="option-check"></span><span class="option-letter">C</span> have</label>
+        <label class="option-label"><input type="radio" name="q6" value="D"><span class="option-check"></span><span class="option-letter">D</span> was</label>
+      </div>
+    </div>
+
+    <!-- Q7 Fill in blank -->
+    <div class="question-card" data-q="Q7">
+      <div class="question-text">7. Complete the sentence:<br>
+        "Could you please <input class="blank-input" id="q7a" placeholder="________"> me the salt?" — "Of course! <input class="blank-input" id="q7b" placeholder="________"> you are."
+      </div>
+      <div style="font-size:13px;color:var(--muted);font-style:italic">Write in the missing words (pass / Here)</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question-card" data-q="Q8">
+      <div class="question-text">8. They _____ be tired after such a long journey.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q8" value="A"><span class="option-check"></span><span class="option-letter">A</span> should</label>
+        <label class="option-label"><input type="radio" name="q8" value="B"><span class="option-check"></span><span class="option-letter">B</span> must</label>
+        <label class="option-label"><input type="radio" name="q8" value="C"><span class="option-check"></span><span class="option-letter">C</span> can</label>
+        <label class="option-label"><input type="radio" name="q8" value="D"><span class="option-check"></span><span class="option-letter">D</span> would</label>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question-card" data-q="Q9">
+      <div class="question-text">9. The book was written _____ a famous author.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q9" value="A"><span class="option-check"></span><span class="option-letter">A</span> from</label>
+        <label class="option-label"><input type="radio" name="q9" value="B"><span class="option-check"></span><span class="option-letter">B</span> by</label>
+        <label class="option-label"><input type="radio" name="q9" value="C"><span class="option-check"></span><span class="option-letter">C</span> with</label>
+        <label class="option-label"><input type="radio" name="q9" value="D"><span class="option-check"></span><span class="option-letter">D</span> of</label>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question-card" data-q="Q10">
+      <div class="question-text">10. I wish I _____ speak French fluently.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q10" value="A"><span class="option-check"></span><span class="option-letter">A</span> could</label>
+        <label class="option-label"><input type="radio" name="q10" value="B"><span class="option-check"></span><span class="option-letter">B</span> can</label>
+        <label class="option-label"><input type="radio" name="q10" value="C"><span class="option-check"></span><span class="option-letter">C</span> will</label>
+        <label class="option-label"><input type="radio" name="q10" value="D"><span class="option-check"></span><span class="option-letter">D</span> would</label>
+      </div>
+    </div>
+
+    <!-- Q11 Vocabulary -->
+    <div class="question-card" data-q="Q11">
+      <div class="question-text">11. <strong>Vocabulary:</strong> What does the word <em>"exhausted"</em> mean?</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q11" value="A"><span class="option-check"></span><span class="option-letter">A</span> Very hungry</label>
+        <label class="option-label"><input type="radio" name="q11" value="B"><span class="option-check"></span><span class="option-letter">B</span> Extremely tired</label>
+        <label class="option-label"><input type="radio" name="q11" value="C"><span class="option-check"></span><span class="option-letter">C</span> Very happy</label>
+        <label class="option-label"><input type="radio" name="q11" value="D"><span class="option-check"></span><span class="option-letter">D</span> Slightly bored</label>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question-card" data-q="Q12">
+      <div class="question-text">12. Which sentence is grammatically correct?</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q12" value="A"><span class="option-check"></span><span class="option-letter">A</span> She don't like coffee.</label>
+        <label class="option-label"><input type="radio" name="q12" value="B"><span class="option-check"></span><span class="option-letter">B</span> He doesn't likes tea.</label>
+        <label class="option-label"><input type="radio" name="q12" value="C"><span class="option-check"></span><span class="option-letter">C</span> They don't enjoy spicy food.</label>
+        <label class="option-label"><input type="radio" name="q12" value="D"><span class="option-check"></span><span class="option-letter">D</span> We doesn't travel often.</label>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question-card" data-q="Q13">
+      <div class="question-text">13. By the time we arrive, the concert _____ started.</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q13" value="A"><span class="option-check"></span><span class="option-letter">A</span> will have</label>
+        <label class="option-label"><input type="radio" name="q13" value="B"><span class="option-check"></span><span class="option-letter">B</span> will</label>
+        <label class="option-label"><input type="radio" name="q13" value="C"><span class="option-check"></span><span class="option-letter">C</span> would have</label>
+        <label class="option-label"><input type="radio" name="q13" value="D"><span class="option-check"></span><span class="option-letter">D</span> has</label>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="question-card" data-q="Q14">
+      <div class="question-text">14. The opposite of <em>"generous"</em> is:</div>
+      <div class="options-grid">
+        <label class="option-label"><input type="radio" name="q14" value="A"><span class="option-check"></span><span class="option-letter">A</span> Kind</label>
+        <label class="option-label"><input type="radio" name="q14" value="B"><span class="option-check"></span><span class="option-letter">B</span> Stingy</label>
+        <label class="option-label"><input type="radio" name="q14" value="C"><span class="option-check"></span><span class="option-letter">C</span> Brave</label>
+        <label class="option-label"><input type="radio" name="q14" value="D"><span class="option-check"></span><span class="option-letter">D</span> Polite</label>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question-card" data-q="Q15">
+      <div class="question-text">15. <strong>Translation challenge:</strong> Write in English: <em>"No sé si podré ir mañana."</em></div>
+      <textarea class="text-response" id="q15text" placeholder="Write your translation here…" rows="2"></textarea>
+    </div>
+  </div>
+
+  <div class="ornament">✦ ✦ ✦</div>
+
+  <!-- SECTION 2: LISTENING -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title-group">
+        <h2>Listening Comprehension</h2>
+        <p>Listen carefully and answer the questions — 3 passages</p>
+      </div>
+    </div>
+
+    <!-- Passage A -->
+    <div class="question-card" data-q="Passage A">
+      <div class="question-text" style="margin-bottom:16px"><strong>Passage A — Short Conversation</strong><br>
+      <span style="font-size:14px;color:var(--muted);font-style:italic">Listen to or read the dialogue, then answer the questions.</span></div>
+
+      <div class="audio-player" id="audioA">
+        <button class="play-btn" onclick="playAudio('A')">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="audio-info">
+          <div class="audio-track-name">Dialogue at a Hotel</div>
+          <div class="audio-meta">~45 seconds · Beginner – Intermediate</div>
+        </div>
+        <div class="audio-wave" id="waveA">
+          <div class="wave-bar" style="height:45%"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+      </div>
+
+      <button class="show-transcript-btn" onclick="toggleTranscript('trA', this)">📄 Show Transcript</button>
+      <div class="transcript-box" id="trA">
+        <strong>Receptionist:</strong> Good afternoon! Welcome to the Grand Hotel. How can I help you?<br>
+        <strong>Guest:</strong> Hello! I have a reservation. My name is James Collins.<br>
+        <strong>Receptionist:</strong> Let me check… Yes, a double room for three nights. Is that correct?<br>
+        <strong>Guest:</strong> Yes, that's right. We also requested a room with a sea view, if possible.<br>
+        <strong>Receptionist:</strong> Of course! I'll upgrade you to a room on the fourth floor. Breakfast is included from 7 to 10 every morning.<br>
+        <strong>Guest:</strong> Wonderful, thank you so much!
+      </div>
+
+      <div style="margin-top:8px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--muted);letter-spacing:0.5px">PASSAGE A — Questions:</div>
+
+        <div style="margin-bottom:14px">
+          <div class="question-text" style="margin-bottom:10px">A1. What kind of room did the guest book?</div>
+          <div class="options-grid">
+            <label class="option-label"><input type="radio" name="qa1" value="A"><span class="option-check"></span><span class="option-letter">A</span> A single room</label>
+            <label class="option-label"><input type="radio" name="qa1" value="B"><span class="option-check"></span><span class="option-letter">B</span> A suite</label>
+            <label class="option-label"><input type="radio" name="qa1" value="C"><span class="option-check"></span><span class="option-letter">C</span> A double room</label>
+            <label class="option-label"><input type="radio" name="qa1" value="D"><span class="option-check"></span><span class="option-letter">D</span> A family room</label>
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div class="question-text" style="margin-bottom:10px">A2. For how many nights is the reservation?</div>
+          <div class="options-grid">
+            <label class="option-label"><input type="radio" name="qa2" value="A"><span class="option-check"></span><span class="option-letter">A</span> Two</label>
+            <label class="option-label"><input type="radio" name="qa2" value="B"><span class="option-check"></span><span class="option-letter">B</span> Three</label>
+            <label class="option-label"><input type="radio" name="qa2" value="C"><span class="option-check"></span><span class="option-letter">C</span> Four</label>
+            <label class="option-label"><input type="radio" name="qa2" value="D"><span class="option-check"></span><span class="option-letter">D</span> One</label>
+          </div>
+        </div>
+
+        <div>
+          <div class="question-text" style="margin-bottom:10px">A3. What time does breakfast end?</div>
+          <div class="options-grid">
+            <label class="option-label"><input type="radio" name="qa3" value="A"><span class="option-check"></span><span class="option-letter">A</span> 9:00 AM</label>
+            <label class="option-label"><input type="radio" name="qa3" value="B"><span class="option-check"></span><span class="option-letter">B</span> 10:30 AM</label>
+            <label class="option-label"><input type="radio" name="qa3" value="C"><span class="option-check"></span><span class="option-letter">C</span> 10:00 AM</label>
+            <label class="option-label"><input type="radio" name="qa3" value="D"><span class="option-check"></span><span class="option-letter">D</span> 11:00 AM</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Passage B -->
+    <div class="question-card" data-q="Passage B">
+      <div class="question-text" style="margin-bottom:16px"><strong>Passage B — News Report</strong><br>
+      <span style="font-size:14px;color:var(--muted);font-style:italic">Read or listen, then answer the questions below.</span></div>
+
+      <button class="show-transcript-btn" onclick="toggleTranscript('trB', this)">📄 Show Passage</button>
+      <div class="transcript-box" id="trB">
+        Scientists have discovered a new species of bird in the Amazon rainforest. The bird, called the "Emerald Whistler," is known for its bright green feathers and a unique song that can be heard from over a kilometer away. Researchers believe it has been living in remote areas for thousands of years, but was only found due to recent advancements in drone technology. Conservation groups are now working to protect its natural habitat.
+      </div>
+
+      <div style="margin-top:16px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--muted);letter-spacing:0.5px">PASSAGE B — Questions:</div>
+        <div style="margin-bottom:14px">
+          <div class="question-text" style="margin-bottom:10px">B1. What is notable about the Emerald Whistler's song?</div>
+          <div class="options-grid">
+            <label class="option-label"><input type="radio" name="qb1" value="A"><span class="option-check"></span><span class="option-letter">A</span> It sounds like a whistle</label>
+            <label class="option-label"><input type="radio" name="qb1" value="B"><span class="option-check"></span><span class="option-letter">B</span> It can be heard over 1 km away</label>
+            <label class="option-label"><input type="radio" name="qb1" value="C"><span class="option-check"></span><span class="option-letter">C</span> It attracts other birds</label>
+            <label class="option-label"><input type="radio" name="qb1" value="D"><span class="option-check"></span><span class="option-letter">D</span> It only sings at night</label>
+          </div>
+        </div>
+        <div>
+          <div class="question-text" style="margin-bottom:10px">B2. How was the bird discovered?</div>
+          <div class="options-grid">
+            <label class="option-label"><input type="radio" name="qb2" value="A"><span class="option-check"></span><span class="option-letter">A</span> By local communities</label>
+            <label class="option-label"><input type="radio" name="qb2" value="B"><span class="option-check"></span><span class="option-letter">B</span> Through advanced drone technology</label>
+            <label class="option-label"><input type="radio" name="qb2" value="C"><span class="option-check"></span><span class="option-letter">C</span> During a hiking expedition</label>
+            <label class="option-label"><input type="radio" name="qb2" value="D"><span class="option-check"></span><span class="option-letter">D</span> By accident, near a river</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comprehension writing -->
+    <div class="question-card" data-q="Listening C">
+      <div class="question-text"><strong>C — Written Response:</strong> Based on Passage B, write 2–3 sentences summarizing what you understood in your own words.</div>
+      <textarea class="text-response" id="listenWritten" placeholder="Write your summary here…" rows="4"></textarea>
+    </div>
+  </div>
+
+  <div class="ornament">✦ ✦ ✦</div>
+
+  <!-- SECTION 3: READING COMPREHENSION -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title-group">
+        <h2>Reading Comprehension</h2>
+        <p>Read each text carefully and answer the questions — 2 passages</p>
+      </div>
+    </div>
+
+    <!-- Reading Text 1: Intermediate -->
+    <div class="question-card" data-q="Reading 1">
+      <div class="question-text" style="margin-bottom:16px">
+        <strong>Text 1 — A Change of Pace</strong><br>
+        <span style="font-size:13px;color:var(--muted);font-style:italic">Intermediate level · Read the text, then answer the questions below.</span>
+      </div>
+
+      <div style="background:var(--section-bg);border-left:3px solid var(--gold);padding:20px 24px;margin-bottom:24px;font-size:15px;line-height:1.9;color:var(--ink)">
+        <p style="margin-bottom:12px">
+          After twenty-five years working as an accountant in a busy city office, Margaret decided it was time for a change. At the age of fifty-two, she left her job, sold her apartment, and moved to a small coastal village in southern Portugal. Her friends thought she had lost her mind.
+        </p>
+        <p style="margin-bottom:12px">
+          "People kept asking me, 'But what will you <em>do</em> there?'" she laughs. "And I told them — I'll learn Portuguese, I'll grow vegetables, I'll read all the books I never had time for."
+        </p>
+        <p style="margin-bottom:12px">
+          Two years later, Margaret runs a small bed-and-breakfast from her whitewashed cottage, where she hosts travelers from around the world. She wakes up at six every morning, not because she has to, but because she wants to watch the sun rise over the Atlantic.
+        </p>
+        <p>
+          "I'm not saying everyone should quit their job and move abroad," she says. "But I do think we spend too much time doing what we're <em>supposed</em> to do, and not enough time doing what makes us feel alive."
+        </p>
+      </div>
+
+      <div style="font-size:14px;font-weight:600;margin-bottom:16px;color:var(--muted);letter-spacing:0.5px">TEXT 1 — Questions:</div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R1. What did Margaret do for a living before her big change?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r1" value="A"><span class="option-check"></span><span class="option-letter">A</span> She was a nurse</label>
+          <label class="option-label"><input type="radio" name="r1" value="B"><span class="option-check"></span><span class="option-letter">B</span> She was a teacher</label>
+          <label class="option-label"><input type="radio" name="r1" value="C"><span class="option-check"></span><span class="option-letter">C</span> She was an accountant</label>
+          <label class="option-label"><input type="radio" name="r1" value="D"><span class="option-check"></span><span class="option-letter">D</span> She was a journalist</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R2. How did her friends react to her decision?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r2" value="A"><span class="option-check"></span><span class="option-letter">A</span> They were very supportive</label>
+          <label class="option-label"><input type="radio" name="r2" value="B"><span class="option-check"></span><span class="option-letter">B</span> They thought she was making a mistake</label>
+          <label class="option-label"><input type="radio" name="r2" value="C"><span class="option-check"></span><span class="option-letter">C</span> They wanted to join her</label>
+          <label class="option-label"><input type="radio" name="r2" value="D"><span class="option-check"></span><span class="option-letter">D</span> They were not surprised</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R3. What does Margaret do now?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r3" value="A"><span class="option-check"></span><span class="option-letter">A</span> She works as an accountant from home</label>
+          <label class="option-label"><input type="radio" name="r3" value="B"><span class="option-check"></span><span class="option-letter">B</span> She runs a small hotel for travelers</label>
+          <label class="option-label"><input type="radio" name="r3" value="C"><span class="option-check"></span><span class="option-letter">C</span> She teaches English in Portugal</label>
+          <label class="option-label"><input type="radio" name="r3" value="D"><span class="option-check"></span><span class="option-letter">D</span> She writes travel books</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R4. What is the main message of Margaret's final quote?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r4" value="A"><span class="option-check"></span><span class="option-letter">A</span> Everyone should move abroad to be happy</label>
+          <label class="option-label"><input type="radio" name="r4" value="B"><span class="option-check"></span><span class="option-letter">B</span> Work is the most important thing in life</label>
+          <label class="option-label"><input type="radio" name="r4" value="C"><span class="option-check"></span><span class="option-letter">C</span> People should make more time for what truly fulfills them</label>
+          <label class="option-label"><input type="radio" name="r4" value="D"><span class="option-check"></span><span class="option-letter">D</span> It is too risky to change careers after 50</label>
+        </div>
+      </div>
+
+      <div>
+        <div class="question-text" style="margin-bottom:8px">R5. In your own words, why do you think Margaret wakes up at 6 AM now, even though she doesn't have to? Write 1–2 sentences.</div>
+        <textarea class="text-response" id="r5text" placeholder="Write your answer here…" rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- Reading Text 2: Upper Intermediate -->
+    <div class="question-card" data-q="Reading 2">
+      <div class="question-text" style="margin-bottom:16px">
+        <strong>Text 2 — The Science of Sleep</strong><br>
+        <span style="font-size:13px;color:var(--muted);font-style:italic">Upper Intermediate level · Read and answer the questions.</span>
+      </div>
+
+      <div style="background:var(--section-bg);border-left:3px solid var(--rust);padding:20px 24px;margin-bottom:24px;font-size:15px;line-height:1.9;color:var(--ink)">
+        <p style="margin-bottom:12px">
+          For decades, sleep was considered a passive state — a time when the brain simply switched off and rested. Modern neuroscience has completely overturned this idea. Far from being inactive, the sleeping brain is extraordinarily busy, performing essential tasks that waking life simply cannot accomplish.
+        </p>
+        <p style="margin-bottom:12px">
+          One of sleep's most critical functions is memory consolidation. While we sleep, the hippocampus — the brain's short-term memory center — transfers information to the cerebral cortex for long-term storage. This is why students who sleep well after studying consistently outperform those who stay up all night reviewing their notes.
+        </p>
+        <p style="margin-bottom:12px">
+          Sleep also plays a vital role in physical health. During deep sleep, the body releases growth hormone, repairs damaged tissue, and strengthens the immune system. Chronic sleep deprivation, on the other hand, has been linked to an increased risk of obesity, heart disease, and even certain types of cancer.
+        </p>
+        <p>
+          Despite this evidence, many adults in modern societies treat sleep as a luxury rather than a necessity. The average adult now sleeps one to two hours less per night than people did fifty years ago. Researchers warn that this widespread sleep loss represents a "silent public health crisis" that deserves far more attention than it currently receives.
+        </p>
+      </div>
+
+      <div style="font-size:14px;font-weight:600;margin-bottom:16px;color:var(--muted);letter-spacing:0.5px">TEXT 2 — Questions:</div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R6. According to the text, what was the old understanding of sleep?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r6" value="A"><span class="option-check"></span><span class="option-letter">A</span> The brain was very active during sleep</label>
+          <label class="option-label"><input type="radio" name="r6" value="B"><span class="option-check"></span><span class="option-letter">B</span> Sleep was seen as a time when the brain rested and did nothing</label>
+          <label class="option-label"><input type="radio" name="r6" value="C"><span class="option-check"></span><span class="option-letter">C</span> Sleep was known to help memory</label>
+          <label class="option-label"><input type="radio" name="r6" value="D"><span class="option-check"></span><span class="option-letter">D</span> Sleep was considered dangerous</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R7. What happens in the hippocampus during sleep?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r7" value="A"><span class="option-check"></span><span class="option-letter">A</span> It controls breathing and heart rate</label>
+          <label class="option-label"><input type="radio" name="r7" value="B"><span class="option-check"></span><span class="option-letter">B</span> It transfers short-term memories to long-term storage</label>
+          <label class="option-label"><input type="radio" name="r7" value="C"><span class="option-check"></span><span class="option-letter">C</span> It generates dreams</label>
+          <label class="option-label"><input type="radio" name="r7" value="D"><span class="option-check"></span><span class="option-letter">D</span> It releases growth hormones</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R8. Which of the following is NOT mentioned as a risk of chronic sleep deprivation?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r8" value="A"><span class="option-check"></span><span class="option-letter">A</span> Obesity</label>
+          <label class="option-label"><input type="radio" name="r8" value="B"><span class="option-check"></span><span class="option-letter">B</span> Depression</label>
+          <label class="option-label"><input type="radio" name="r8" value="C"><span class="option-check"></span><span class="option-letter">C</span> Heart disease</label>
+          <label class="option-label"><input type="radio" name="r8" value="D"><span class="option-check"></span><span class="option-letter">D</span> Certain types of cancer</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div class="question-text" style="margin-bottom:10px">R9. What does the phrase <em>"silent public health crisis"</em> suggest?</div>
+        <div class="options-grid">
+          <label class="option-label"><input type="radio" name="r9" value="A"><span class="option-check"></span><span class="option-letter">A</span> The problem is not serious enough to worry about</label>
+          <label class="option-label"><input type="radio" name="r9" value="B"><span class="option-check"></span><span class="option-letter">B</span> It is a serious but largely ignored problem</label>
+          <label class="option-label"><input type="radio" name="r9" value="C"><span class="option-check"></span><span class="option-letter">C</span> Hospitals are already treating many sleep patients</label>
+          <label class="option-label"><input type="radio" name="r9" value="D"><span class="option-check"></span><span class="option-letter">D</span> Noise is the main cause of poor sleep</label>
+        </div>
+      </div>
+
+      <div>
+        <div class="question-text" style="margin-bottom:8px">R10. Do you think sleep is treated as a priority in your daily life? Why or why not? Write 3–4 sentences using evidence from the text.</div>
+        <textarea class="text-response" id="r10text" placeholder="Write your personal response here…" rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="ornament">✦ ✦ ✦</div>
+
+  <!-- SECTION 4: ORAL -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title-group">
+        <h2>Spoken English</h2>
+        <p>Record your responses — speak naturally and at your own pace</p>
+      </div>
+    </div>
+
+    <div class="tutor-note" style="margin-bottom:24px">This section is evaluated live with your tutor. Record your answers, or answer verbally during your session. There are no wrong responses — we are listening for fluency, confidence, and vocabulary range.</div>
+
+    <!-- Oral Q1 -->
+    <div class="speaking-card">
+      <div class="question-text"><strong>Oral 1 — Introduce yourself</strong></div>
+      <div class="speaking-prompt">Please talk about yourself for about 1–2 minutes. Include: your name, where you are from, what you do for work, and why you want to learn English.</div>
+      <div class="speaking-note">💡 Tip: Don't worry about perfection. Just speak naturally!</div>
+      <button class="record-btn" id="recBtn1" onclick="toggleRecord(1)">
+        <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-1 16.93V22h2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z"/></svg>
+        Start Recording
+      </button>
+      <div class="recording-status" id="recStatus1"></div>
+    </div>
+
+    <!-- Oral Q2 -->
+    <div class="speaking-card">
+      <div class="question-text"><strong>Oral 2 — Daily Routine</strong></div>
+      <div class="speaking-prompt">Describe a typical day in your life. What time do you wake up? What do you do in the morning, afternoon, and evening? Use as many details as you can.</div>
+      <div class="speaking-note">💡 Try to use time expressions: "first," "then," "after that," "finally."</div>
+      <button class="record-btn" id="recBtn2" onclick="toggleRecord(2)">
+        <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-1 16.93V22h2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z"/></svg>
+        Start Recording
+      </button>
+      <div class="recording-status" id="recStatus2"></div>
+    </div>
+
+    <!-- Oral Q3 -->
+    <div class="speaking-card">
+      <div class="question-text"><strong>Oral 3 — Opinion Question</strong></div>
+      <div class="speaking-prompt">Do you think technology has made our lives better or worse? Give your opinion and at least two reasons to support it.</div>
+      <div class="speaking-note">💡 Use phrases like "In my opinion…", "I think that…", "For example…", "On the other hand…"</div>
+      <button class="record-btn" id="recBtn3" onclick="toggleRecord(3)">
+        <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-1 16.93V22h2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z"/></svg>
+        Start Recording
+      </button>
+      <div class="recording-status" id="recStatus3"></div>
+    </div>
+
+    <!-- Tutor notes field -->
+    <div class="question-card" style="border-left: 4px solid var(--gold);" data-q="Tutor">
+      <div class="question-text"><strong>✦ Tutor's Oral Evaluation Notes</strong><br>
+      <span style="font-size:14px;color:var(--muted);font-style:italic">(For tutor use during/after the session)</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="field-group">
+          <label>Fluency (1–5)</label>
+          <input type="number" min="1" max="5" id="fluency" placeholder="e.g. 3">
+        </div>
+        <div class="field-group">
+          <label>Vocabulary Range (1–5)</label>
+          <input type="number" min="1" max="5" id="vocab" placeholder="e.g. 3">
+        </div>
+        <div class="field-group">
+          <label>Pronunciation (1–5)</label>
+          <input type="number" min="1" max="5" id="pronunc" placeholder="e.g. 3">
+        </div>
+        <div class="field-group">
+          <label>Confidence (1–5)</label>
+          <input type="number" min="1" max="5" id="confidence" placeholder="e.g. 3">
+        </div>
+      </div>
+      <textarea class="text-response" id="tutorNotes" placeholder="General observations about the student's spoken English…" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <p style="color:var(--muted);font-size:14px;font-style:italic;margin-bottom:20px">When you have completed all sections, click below to generate your results.</p>
+    <button class="submit-btn" onclick="submitExam()"><span>Complete & View Results</span></button>
+  </div>
+
+</div>
+
+<!-- RESULTS -->
+<div class="results-panel" id="resultsPanel">
+  <div class="results-card">
+    <div class="results-title">Assessment Complete</div>
+    <div class="results-subtitle">Here is a summary of the student's placement results</div>
+    <div class="score-display">
+      <div class="score-number" id="finalScore">—</div>
+      <div class="score-label">Grammar Score</div>
+    </div>
+    <div class="level-badge" id="levelBadge">Calculating level…</div>
+    <div class="results-breakdown">
+      <div class="breakdown-item">
+        <div class="breakdown-label">Grammar</div>
+        <div class="breakdown-score" id="grammarScore">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Listening</div>
+        <div class="breakdown-score" id="listeningScore">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Reading</div>
+        <div class="breakdown-score" id="readingScore">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Oral</div>
+        <div class="breakdown-score" id="oralScore">—</div>
+      </div>
+    </div>
+    <div class="results-notes">
+      <h4>Level Description</h4>
+      <p id="levelDesc">—</p>
+    </div>
+    <div class="results-notes">
+      <h4>Tutor Recommendations</h4>
+      <p id="tutorRec">—</p>
+    </div>
+    <p id="formspreeStatus" style="margin-top:20px;font-size:14px;font-style:italic;min-height:20px;"></p>
+    <button class="submit-btn" style="margin-top:16px" onclick="window.print()"><span>🖨 Print / Save Results</span></button>
+  </div>
+</div>
+
+<script>
+// ---- PROGRESS ----
+function updateProgress() {
+  const radios = ['q1','q2','q3','q4','q5','q6','q8','q9','q10','q11','q12','q13','q14',
+                  'qa1','qa2','qa3','qb1','qb2',
+                  'r1','r2','r3','r4','r6','r7','r8','r9'];
+  let answered = 0;
+  radios.forEach(name => {
+    if (document.querySelector(`input[name="${name}"]:checked`)) answered++;
+  });
+  const pct = Math.round((answered / radios.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressText').textContent = pct < 30 ? 'Just getting started…' : pct < 70 ? 'Good progress!' : pct < 100 ? 'Almost there…' : 'Ready to submit!';
+}
+document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateProgress));
+
+// ---- AUDIO SIMULATION ----
+let audioIntervals = {};
+function playAudio(id) {
+  const wave = document.getElementById('wave' + id);
+  if (audioIntervals[id]) {
+    clearInterval(audioIntervals[id]);
+    delete audioIntervals[id];
+    wave.querySelectorAll('.wave-bar').forEach(b => b.classList.remove('playing'));
+  } else {
+    wave.querySelectorAll('.wave-bar').forEach(b => b.classList.add('playing'));
+    let t = 0;
+    audioIntervals[id] = setInterval(() => {
+      t++;
+      if (t > 45) {
+        clearInterval(audioIntervals[id]);
+        delete audioIntervals[id];
+        wave.querySelectorAll('.wave-bar').forEach(b => b.classList.remove('playing'));
+      }
+    }, 1000);
+  }
+}
+
+// ---- TRANSCRIPTS ----
+function toggleTranscript(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('visible');
+  btn.textContent = el.classList.contains('visible') ? '📄 Hide Transcript' : '📄 Show Transcript';
+  if (id === 'trB') btn.textContent = el.classList.contains('visible') ? '📄 Hide Passage' : '📄 Show Passage';
+}
+
+// ---- RECORDING SIMULATION ----
+let recTimers = {};
+let recIntervals = {};
+function toggleRecord(n) {
+  const btn = document.getElementById('recBtn' + n);
+  const status = document.getElementById('recStatus' + n);
+  if (btn.classList.contains('recording')) {
+    btn.classList.remove('recording');
+    btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-1 16.93V22h2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z"/></svg> Start Recording`;
+    clearInterval(recIntervals[n]);
+    const secs = recTimers[n] || 0;
+    status.innerHTML = `✓ Recorded: <span class="timer">${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}</span> — Ready for tutor review.`;
+  } else {
+    btn.classList.add('recording');
+    btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-1 16.93V22h2v-2.07A8 8 0 0 0 20 12h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z"/></svg> ● Stop Recording`;
+    recTimers[n] = 0;
+    status.innerHTML = `Recording… <span class="timer" id="timerDisplay${n}">0:00</span>`;
+    recIntervals[n] = setInterval(() => {
+      recTimers[n]++;
+      const s = recTimers[n];
+      const el = document.getElementById('timerDisplay' + n);
+      if (el) el.textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+    }, 1000);
+  }
+}
+
+// ---- SUBMIT & SCORE ----
+const answers = { q1:'B',q2:'A',q3:'B',q4:'B',q5:'B',q6:'B',q8:'B',q9:'B',q10:'A',q11:'B',q12:'C',q13:'A',q14:'B',
+                  qa1:'C',qa2:'B',qa3:'C',qb1:'B',qb2:'B',
+                  r1:'C',r2:'B',r3:'B',r4:'C',r6:'B',r7:'B',r8:'B',r9:'B' };
+
+async function submitExam() {
+  let grammarCorrect = 0, listenCorrect = 0, readingCorrect = 0;
+  const grammarQs = ['q1','q2','q3','q4','q5','q6','q8','q9','q10','q11','q12','q13','q14'];
+  const listenQs = ['qa1','qa2','qa3','qb1','qb2'];
+  const readingQs = ['r1','r2','r3','r4','r6','r7','r8','r9'];
+
+  grammarQs.forEach(n => {
+    const sel = document.querySelector(`input[name="${n}"]:checked`);
+    if (sel && sel.value === answers[n]) grammarCorrect++;
+  });
+  listenQs.forEach(n => {
+    const sel = document.querySelector(`input[name="${n}"]:checked`);
+    if (sel && sel.value === answers[n]) listenCorrect++;
+  });
+  readingQs.forEach(n => {
+    const sel = document.querySelector(`input[name="${n}"]:checked`);
+    if (sel && sel.value === answers[n]) readingCorrect++;
+  });
+
+  const fl = parseInt(document.getElementById('fluency').value)||0;
+  const vc = parseInt(document.getElementById('vocab').value)||0;
+  const pr = parseInt(document.getElementById('pronunc').value)||0;
+  const co = parseInt(document.getElementById('confidence').value)||0;
+  const oralAvg = (fl+vc+pr+co > 0) ? Math.round(((fl+vc+pr+co)/20)*100) : null;
+
+  const grammarPct = Math.round((grammarCorrect/13)*100);
+  const listenPct = Math.round((listenCorrect/5)*100);
+  const readingPct = Math.round((readingCorrect/8)*100);
+
+  let level, desc, rec;
+  const avgScore = oralAvg
+    ? Math.round((grammarPct + listenPct + readingPct + oralAvg)/4)
+    : Math.round((grammarPct + listenPct + readingPct)/3);
+
+  if (avgScore < 25) {
+    level = 'A1 — Beginner';
+    desc = 'The student has very limited or no prior knowledge of English. They can understand and use basic familiar expressions.';
+    rec = 'Start with greetings, numbers, colors, and simple present tense. Focus on building a core vocabulary of 300–500 words. Use visual aids and bilingual materials.';
+  } else if (avgScore < 45) {
+    level = 'A2 — Elementary';
+    desc = 'The student can communicate in simple and routine tasks. They understand frequently used expressions related to daily life.';
+    rec = 'Focus on simple past, present continuous, and WH-questions. Introduce common phrasal verbs and everyday conversational phrases.';
+  } else if (avgScore < 65) {
+    level = 'B1 — Intermediate';
+    desc = 'The student can handle most situations while traveling and produce simple connected text on familiar topics.';
+    rec = 'Work on present/past perfect, conditionals, and reported speech. Expand vocabulary to include formal and informal registers.';
+  } else if (avgScore < 82) {
+    level = 'B2 — Upper Intermediate';
+    desc = 'The student can interact with a degree of fluency and spontaneity and produce clear, detailed text on a wide range of subjects.';
+    rec = 'Focus on advanced grammar (passive structures, modal verbs in context), idiomatic language, and academic/professional writing skills.';
+  } else {
+    level = 'C1 — Advanced';
+    desc = 'The student can express ideas fluently and spontaneously and use language flexibly and effectively for social, academic, and professional purposes.';
+    rec = 'Fine-tune nuanced grammar, expand collocations and idiomatic expressions, and work on register-appropriate writing and presentations.';
+  }
+
+  // Update results panel
+  document.getElementById('finalScore').textContent = grammarPct + '%';
+  document.getElementById('grammarScore').textContent = grammarCorrect + '/13';
+  document.getElementById('listeningScore').textContent = listenCorrect + '/5';
+  document.getElementById('readingScore').textContent = readingCorrect + '/8';
+  document.getElementById('oralScore').textContent = oralAvg ? oralAvg + '%' : 'Pending';
+  document.getElementById('levelBadge').textContent = level;
+  document.getElementById('levelDesc').textContent = desc;
+  document.getElementById('tutorRec').textContent = rec;
+
+  document.getElementById('resultsPanel').classList.add('visible');
+  document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+
+  // ---- SEND RESULTS TO TUTOR VIA FORMSPREE ----
+  const studentName = document.getElementById('studentName').value || 'No name provided';
+  const studentAge  = document.getElementById('studentAge').value  || '—';
+  const prevExp     = document.getElementById('prevExp').value     || '—';
+  const examDate    = document.getElementById('examDate').value    || '—';
+
+  const q15ans      = document.getElementById('q15text').value        || '—';
+  const listenWrite = document.getElementById('listenWritten').value   || '—';
+  const r5ans       = document.getElementById('r5text').value          || '—';
+  const r10ans      = document.getElementById('r10text').value         || '—';
+  const tutorNotes  = document.getElementById('tutorNotes').value      || '—';
+
+  const payload = {
+    _subject: `📝 Exam Results — ${studentName} — ${level}`,
+    '👤 Student Name':        studentName,
+    '🎂 Age':                 studentAge,
+    '📅 Exam Date':           examDate,
+    '📚 Previous Experience': prevExp,
+    '─────────────────────': '─── SCORES ───',
+    '🏆 Overall Level':       level,
+    '📊 Grammar Score':       `${grammarCorrect}/13 (${grammarPct}%)`,
+    '🎧 Listening Score':     `${listenCorrect}/5  (${listenPct}%)`,
+    '📖 Reading Score':       `${readingCorrect}/8  (${readingPct}%)`,
+    '🗣️ Oral Score':          oralAvg ? `${oralAvg}%` : 'Pending tutor evaluation',
+    '──────────────────────': '─── WRITTEN RESPONSES ───',
+    '✍️ Q15 Translation':     q15ans,
+    '🎧 Listening Summary':   listenWrite,
+    '📖 Reading R5 Response': r5ans,
+    '📖 Reading R10 Response':r10ans,
+    '───────────────────────': '─── TUTOR NOTES ───',
+    '📝 Tutor Oral Notes':    tutorNotes,
+    '💡 Recommendations':     rec,
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/xjgzqqol', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      document.getElementById('formspreeStatus').textContent = '✅ Results sent to your tutor successfully!';
+      document.getElementById('formspreeStatus').style.color = '#5C7A5C';
+    } else {
+      document.getElementById('formspreeStatus').textContent = '⚠️ Could not send results automatically. Please take a screenshot.';
+      document.getElementById('formspreeStatus').style.color = '#8B4513';
+    }
+  } catch(e) {
+    document.getElementById('formspreeStatus').textContent = '⚠️ Could not send results automatically. Please take a screenshot.';
+    document.getElementById('formspreeStatus').style.color = '#8B4513';
+  }
+}
+
+// SET TODAY'S DATE
+document.getElementById('examDate').valueAsDate = new Date();
+</script>
+</body>
+</html>
